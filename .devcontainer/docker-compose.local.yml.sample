@@ -1,0 +1,5 @@
+# Loaded last so a local .devcontainer/.env (gitignored) can override secrets
+# without touching the committed .env.sample.
+services:
+  php:
+    env_file: .env

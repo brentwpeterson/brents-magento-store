@@ -1,0 +1,24 @@
+# Overrides the upstream magento2-devcontainer compose for the Daffodil
+# starter's monorepo layout: the repo root contains magento/ and daffodil/,
+# so we mount the whole repo at /workspace and point Magento services at
+# /workspace/magento. Angular work happens at /workspace/daffodil with
+# `ng serve` listening on 4200 (forwarded by devcontainer.json).
+services:
+  php:
+    volumes:
+      - ../:/workspace:cached
+    working_dir: /workspace/magento
+    env_file: .env.sample
+    # Expose the Daffodil dev server (ng serve --host 0.0.0.0) on the host.
+    # devcontainer.json's forwardPorts: [4200] handles this from VS Code, but
+    # explicit ports: makes it work for `devcontainer up` / raw `docker compose`
+    # too — handy in CI and for quick smoke tests outside the editor.
+    ports:
+      - "4200:4200"
+  nginx:
+    environment:
+      - MAGE_ROOT_DIR=/workspace/magento
+    volumes:
+      - ../:/workspace:cached
+      - ./magento2-devcontainer/nginx/default:/etc/nginx/templates
+      - ./magento2-devcontainer/nginx/fastcgi_params:/etc/nginx/fastcgi_params:ro

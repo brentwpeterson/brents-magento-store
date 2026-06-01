@@ -1,0 +1,74 @@
+{
+  "name": "magento2-ai-starter-daffodil",
+  "dockerComposeFile": [
+    "docker-compose.yml",
+    "magento2-devcontainer/compose/magento/2.4.9/docker-compose.yml",
+    "docker-compose.shared.yml",
+    "docker-compose.local.yml"
+  ],
+  "workspaceFolder": "/workspace",
+  "service": "php",
+  "forwardPorts": [
+    8000,
+    8025,
+    4200
+  ],
+  "initializeCommand": {
+    "submodules": "[ -f .devcontainer/magento2-devcontainer/.gitignore ] || git submodule update --init --recursive",
+    "env": "[ -f .devcontainer/.env ] || cp .devcontainer/.env.sample .devcontainer/.env",
+    "local-compose": "[ -f .devcontainer/docker-compose.local.yml ] || cp .devcontainer/docker-compose.local.yml.sample .devcontainer/docker-compose.local.yml"
+  },
+  "updateContentCommand": {
+    "composer": "cd magento && [ -f vendor/autoload.php ] || composer install --no-interaction --prefer-dist",
+    "npm": "cd daffodil && [ -f node_modules/.package-lock.json ] || npm ci"
+  },
+  "postCreateCommand": ".devcontainer/magento2-devcontainer/bin/setup-install.sh | bash",
+  "postStartCommand": {
+    "forward-ports": "/bin/bash .devcontainer/bin/forward-ports.sh"
+  },
+  "portsAttributes": {
+    "8000": {
+      "label": "Magento 2 Storefront (nginx)",
+      "onAutoForward": "silent"
+    },
+    "8025": {
+      "label": "Mailpit",
+      "onAutoForward": "silent"
+    },
+    "4200": {
+      "label": "Daffodil (Angular) dev server",
+      "onAutoForward": "notify"
+    }
+  },
+  "otherPortsAttributes": {
+    "onAutoForward": "ignore"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "angular.ng-template",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug"
+      ]
+    }
+  },
+  "remoteUser": "dev",
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "24",
+      "installYarnUsingApt": false
+    },
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {
+      "moby": false
+    }
+  },
+  "hostRequirements": {
+    "cpus": 4,
+    "memory": "8gb"
+  }
+}

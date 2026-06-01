@@ -1,0 +1,7 @@
+{
+  "/graphql": {
+    "target": "http://nginx:8000",
+    "secure": false,
+    "changeOrigin": true
+  }
+}
