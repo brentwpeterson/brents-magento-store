@@ -4,12 +4,15 @@ import {
   signal,
   inject,
   OnInit,
+  PLATFORM_ID,
 } from '@angular/core';
-import { CurrencyPipe, NgOptimizedImage } from '@angular/common';
+import { CurrencyPipe, NgOptimizedImage, isPlatformServer } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { RouterLink } from '@angular/router';
 
 import { ProductListComponent } from '../../product/components/product-list/product-list.component';
+
+declare const process: any;
 
 // ---------------------------------------------------------------------------
 // EDIT YOUR STORE BRANDING HERE
@@ -288,6 +291,11 @@ const FEATURED_QUERY = `
 })
 export class HomeComponent implements OnInit {
   private http = inject(HttpClient);
+  // On the SSR server, /graphql has no origin — use an absolute URL (same rule as app.config.ts).
+  private gqlUrl = isPlatformServer(inject(PLATFORM_ID))
+    ? ((typeof process !== 'undefined' && process.env && process.env['MAGENTO_SSR_GRAPHQL_URL'])
+        || 'http://nginx:8000/graphql')
+    : '/graphql';
 
   readonly storeName = STORE_NAME;
   readonly heroTitle1 = HERO_TITLE_1;
@@ -320,7 +328,7 @@ export class HomeComponent implements OnInit {
   private loadFeatured(cat: CategoryTile): void {
     this.loading.set(true);
     this.http
-      .post<any>('/graphql', { query: FEATURED_QUERY, variables: { uid: cat.uid } })
+      .post<any>(this.gqlUrl, { query: FEATURED_QUERY, variables: { uid: cat.uid } })
       .subscribe({
         next: (res) => {
           const items = res?.data?.products?.items ?? [];
