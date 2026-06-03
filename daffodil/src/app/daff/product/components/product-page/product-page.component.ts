@@ -65,16 +65,18 @@ import { DaffProductDriverResponse } from '@daffodil/product/driver';
   `,
   styles: [`
     :host {
-      --gray-100: #f5f5f5;
-      --gray-200: #e5e5e5;
-      --gray-300: #d4d4d4;
-      --gray-600: #525252;
-      --gray-700: #404040;
-      --gray-900: #171717;
-      --blue-600: #1557e6;
-      --green-600: #059669;
+      /* Remapped to the dark terminal theme so PDP text is readable on #0d1117.
+         --gray-100 stays light because it backs the product image. */
+      --gray-100: #fafafa;
+      --gray-200: #30363d;
+      --gray-300: #30363d;
+      --gray-600: #8b949e;
+      --gray-700: #c9d1d9;
+      --gray-900: #e6edf3;
+      --blue-600: #00ff66;
+      --green-600: #00ff66;
 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--crg-mono, "JetBrains Mono", ui-monospace, monospace);
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -152,8 +154,8 @@ import { DaffProductDriverResponse } from '@daffodil/product/driver';
 
     .current-price {
       font-size: 1.5rem;
-      font-weight: 600;
-      color: var(--gray-900);
+      font-weight: 700;
+      color: var(--crg-amber, #ffcc00);
     }
 
     .product-description {
