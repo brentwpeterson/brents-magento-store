@@ -18,6 +18,29 @@
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
+.crg-footer {
+    margin-top: 3rem;
+    padding: 1.75rem 2rem;
+    border-top: 1px solid #30363d;
+    background: #161b22;
+    text-align: center;
+    font-family: "JetBrains Mono", ui-monospace, monospace;
+    font-size: 0.85rem;
+    color: #8b949e;
+}
+.crg-footer .prompt { color: #39d0ff; margin-right: 0.4rem; }
+.crg-footer a {
+    color: #00ff66;
+    text-decoration: none;
+}
+.crg-footer a:hover {
+    text-decoration: underline;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.5);
+}
 </style>
 <app-navigation></app-navigation>
 <router-outlet />
+<footer class="crg-footer">
+  <span class="prompt">&gt;</span>created by <a href="https://contentcucumber.com" target="_blank" rel="noopener">Content Cucumber</a>
+</footer>
