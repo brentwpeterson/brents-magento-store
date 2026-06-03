@@ -1,1 +1,67 @@
-/* You can add global styles to this file, and also import other style files */
+/* ===========================================================================
+   THE CODING RUNNING GUY — global theme (Terminal / Hacker)
+   Edit the tokens below to retune the whole store at once.
+   =========================================================================== */
+:root {
+  --crg-bg:        #0d1117;  /* page background        */
+  --crg-surface:   #161b22;  /* cards / panels         */
+  --crg-surface-2: #1c2230;  /* hover / raised         */
+  --crg-border:    #30363d;  /* hairlines              */
+  --crg-green:     #00ff66;  /* primary accent (matrix)*/
+  --crg-green-dim: #0b9c45;  /* muted accent           */
+  --crg-cyan:      #39d0ff;  /* secondary accent       */
+  --crg-amber:     #ffcc00;  /* prices / warnings      */
+  --crg-text:      #e6edf3;  /* body text              */
+  --crg-text-dim:  #8b949e;  /* secondary text         */
+  --crg-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  min-height: 100%;
+  background: var(--crg-bg);
+  color: var(--crg-text);
+  font-family: var(--crg-mono);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Subtle grid texture behind everything */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(0, 255, 102, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 102, 0.025) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+app-root { position: relative; z-index: 1; display: block; }
+
+a { color: var(--crg-green); text-decoration: none; }
+
+::selection { background: var(--crg-green); color: var(--crg-bg); }
+
+/* Terminal-style scrollbar */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: var(--crg-bg); }
+::-webkit-scrollbar-thumb {
+  background: var(--crg-border);
+  border: 3px solid var(--crg-bg);
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover { background: var(--crg-green-dim); }
+
+/* Blinking terminal cursor, reusable */
+@keyframes crg-blink { 0%, 49% { opacity: 1; } 50%, 100% { opacity: 0; } }
+.crg-cursor::after {
+  content: "_";
+  color: var(--crg-green);
+  animation: crg-blink 1s step-end infinite;
+}

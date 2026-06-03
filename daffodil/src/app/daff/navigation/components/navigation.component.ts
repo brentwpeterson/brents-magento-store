@@ -23,7 +23,11 @@ import {
     <ng-content></ng-content>
     <nav class="megamenu-navigation">
       <div class="nav-container">
-        <a [routerLink]="['/']" class="store-name">Daffodil Commerce</a>
+        <a [routerLink]="['/']" class="store-name">
+          <span class="win-dots"><i></i><i></i><i></i></span>
+          <span class="prompt">brent&#64;trail</span><span class="punct">:</span><span class="path">~/store</span><span class="punct">$</span>
+          <span class="brand">the-coding-running-guy</span>
+        </a>
         <button class="mobile-menu-toggle" (click)="toggleMobileMenu()" aria-label="Toggle navigation">
           <span class="hamburger-line"></span>
           <span class="hamburger-line"></span>
@@ -32,11 +36,11 @@ import {
         <ul class="nav-list" [class.mobile-open]="isMobileMenuOpen">
           @if (navigationState$ | async; as state) {
             @if (state.loading) {
-              <li class="nav-loading">Loading...</li>
+              <li class="nav-loading">booting menu...</li>
             } @else if (state.error) {
               <li class="nav-error">
-                <span>Error loading menu</span>
-                <button (click)="retry()" class="retry-btn">Retry</button>
+                <span>menu: command not found</span>
+                <button (click)="retry()" class="retry-btn">retry</button>
               </li>
             } @else if (state.data) {
               @for (item of state.data.children || []; track item.id) {
@@ -71,140 +75,129 @@ import {
   styles: [`
     .megamenu-navigation {
       width: 100%;
-      background: #f8f9fa;
-      border-bottom: 1px solid #dee2e6;
-      padding: 1rem 0;
-      line-height: 1rem;
+      background: var(--crg-surface, #161b22);
+      border-bottom: 1px solid var(--crg-border, #30363d);
+      padding: 0.75rem 0;
+      line-height: 1.2;
+      font-family: var(--crg-mono, monospace);
     }
 
     .nav-container {
       display: grid;
       grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      max-width: 1200px;
+      max-width: 1280px;
       margin: 0 auto;
       padding: 0 2rem;
     }
 
     .store-name {
-      font-size: 1rem;
-      font-weight: 600;
-      color: #333;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      font-weight: 700;
       justify-self: start;
       text-decoration: none;
-      transition: color 0.2s ease;
+      white-space: nowrap;
     }
 
-    .store-name:hover {
-      color: #007bff;
+    .win-dots { display: inline-flex; gap: 5px; margin-right: 0.35rem; }
+    .win-dots i {
+      width: 11px; height: 11px; border-radius: 50%; display: block;
     }
+    .win-dots i:nth-child(1) { background: #ff5f56; }
+    .win-dots i:nth-child(2) { background: #ffbd2e; }
+    .win-dots i:nth-child(3) { background: #27c93f; }
+
+    .prompt { color: var(--crg-cyan, #39d0ff); }
+    .punct  { color: var(--crg-text-dim, #8b949e); }
+    .path   { color: var(--crg-text-dim, #8b949e); }
+    .brand  {
+      color: var(--crg-green, #00ff66);
+      text-shadow: 0 0 8px rgba(0, 255, 102, 0.45);
+      margin-left: 0.4rem;
+    }
+    .store-name:hover .brand { text-decoration: underline; }
 
     .nav-list {
       display: flex;
       justify-content: center;
       list-style: none;
-      gap: 2rem;
+      gap: 1.5rem;
       align-items: center;
       margin: 0;
       grid-column: 2;
       padding: 0;
     }
 
-    .nav-item {
-      position: relative;
-    }
+    .nav-item { position: relative; }
 
     .nav-link {
-      padding: 0.5rem 1rem;
+      padding: 0.4rem 0.85rem;
       text-decoration: none;
-      color: #333;
+      color: var(--crg-text, #e6edf3);
       font-weight: 500;
+      font-size: 0.9rem;
       border-radius: 4px;
-      transition: background-color 0.2s ease;
+      transition: color 0.15s ease, background-color 0.15s ease;
       display: block;
     }
+    .nav-link::before { content: "./"; color: var(--crg-text-dim, #8b949e); }
+    .nav-link:hover { color: var(--crg-green, #00ff66); background-color: var(--crg-surface-2, #1c2230); }
 
-    .nav-link:hover {
-      background-color: #e9ecef;
-    }
-
-    .has-dropdown:hover .megamenu-dropdown {
-      display: block;
-    }
+    .has-dropdown:hover .megamenu-dropdown { display: block; }
 
     .megamenu-dropdown {
       display: none;
       position: absolute;
       top: 100%;
       left: 0;
-      background: white;
-      border: 1px solid #dee2e6;
+      background: var(--crg-surface, #161b22);
+      border: 1px solid var(--crg-border, #30363d);
       border-radius: 8px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      min-width: 250px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+      min-width: 220px;
       z-index: 1000;
-      padding: 1rem 0;
+      padding: 0.5rem 0;
     }
 
-    .dropdown-content {
-      padding: 0;
-    }
-
-    .category-column {
-      width: 100%;
-    }
-
-    .subcategory-list {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    .subcategory-item {
-      width: 100%;
-    }
+    .dropdown-content { padding: 0; }
+    .category-column { width: 100%; }
+    .subcategory-list { list-style: none; padding: 0; margin: 0; }
+    .subcategory-item { width: 100%; }
 
     .subcategory-link {
       display: block;
       padding: 0.5rem 1rem;
-      color: #666;
+      color: var(--crg-text-dim, #8b949e);
       text-decoration: none;
-      transition: background-color 0.2s ease;
+      font-size: 0.85rem;
+      transition: background-color 0.15s ease, color 0.15s ease;
     }
+    .subcategory-link:hover { background-color: var(--crg-surface-2, #1c2230); color: var(--crg-green, #00ff66); }
 
-    .subcategory-link:hover {
-      background-color: #f8f9fa;
-      color: #333;
-    }
-
-    .nav-loading {
-      color: #666;
-      font-size: 0.9rem;
-      padding: 0.5rem 1rem;
-    }
+    .nav-loading { color: var(--crg-text-dim, #8b949e); font-size: 0.9rem; padding: 0.5rem 1rem; }
 
     .nav-error {
-      color: #6c757d;
-      font-size: 0.875rem;
+      color: var(--crg-text-dim, #8b949e);
+      font-size: 0.85rem;
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      height: 2rem;
     }
 
     .retry-btn {
-      padding: 0.25rem 0.5rem;
-      background: #6c757d;
-      color: white;
-      border: none;
+      padding: 0.25rem 0.6rem;
+      background: transparent;
+      color: var(--crg-green, #00ff66);
+      border: 1px solid var(--crg-green-dim, #0b9c45);
       border-radius: 3px;
       cursor: pointer;
       font-size: 0.75rem;
+      font-family: var(--crg-mono, monospace);
     }
-
-    .retry-btn:hover {
-      background: #5a6268;
-    }
+    .retry-btn:hover { background: var(--crg-green, #00ff66); color: var(--crg-bg, #0d1117); }
 
     .mobile-menu-toggle {
       display: none;
@@ -216,41 +209,24 @@ import {
       gap: 3px;
       justify-self: end;
     }
-
-    .hamburger-line {
-      width: 20px;
-      height: 2px;
-      background: #333;
-      transition: all 0.3s ease;
-    }
+    .hamburger-line { width: 22px; height: 2px; background: var(--crg-green, #00ff66); transition: all 0.3s ease; }
 
     .mobile-overlay {
       display: none;
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.5);
+      inset: 0;
+      background: rgba(0, 0, 0, 0.7);
       z-index: 999;
       opacity: 0;
       transition: opacity 0.3s ease;
     }
-
-    .mobile-overlay.active {
-      display: block;
-      opacity: 1;
-    }
+    .mobile-overlay.active { display: block; opacity: 1; }
 
     @media (max-width: 768px) {
-      .nav-container {
-        grid-template-columns: auto 1fr auto;
-        position: relative;
-      }
-
-      .mobile-menu-toggle {
-        display: flex;
-      }
+      .nav-container { grid-template-columns: auto 1fr auto; position: relative; }
+      .store-name { font-size: 0.8rem; }
+      .path, .prompt, .punct { display: none; }
+      .mobile-menu-toggle { display: flex; }
 
       .nav-list {
         position: fixed;
@@ -258,73 +234,26 @@ import {
         right: 0;
         width: 300px;
         height: 100%;
-        background: white;
+        background: var(--crg-surface, #161b22);
+        border-left: 1px solid var(--crg-border, #30363d);
         flex-direction: column;
         justify-content: flex-start;
         padding: 2rem 1.5rem;
         gap: 0;
         z-index: 1000;
-        box-shadow: -2px 0 10px rgba(0, 0, 0, 0.1);
         transform: translateX(100%);
         overflow-y: auto;
       }
+      :host-context(body:hover) .nav-list { transition: transform 0.3s ease; }
+      .nav-list.mobile-open { transform: translateX(0); }
 
-      :host-context(body:hover) .nav-list {
-        transition: transform 0.3s ease;
-      }
+      .nav-item { width: 100%; border-bottom: 1px solid var(--crg-border, #30363d); margin-bottom: 0.5rem; }
+      .nav-item:last-child { border-bottom: none; }
+      .nav-link { padding: 1rem 0; width: 100%; font-size: 1.05rem; }
 
-      .nav-list.mobile-open {
-        transform: translateX(0);
-      }
-
-      .nav-item {
-        width: 100%;
-        border-bottom: 1px solid #f1f3f4;
-        margin-bottom: 0.5rem;
-      }
-
-      .nav-item:last-child {
-        border-bottom: none;
-      }
-
-      .nav-link {
-        padding: 1rem 0;
-        display: block;
-        width: 100%;
-        color: #333;
-        font-size: 1.1rem;
-        font-weight: 500;
-      }
-
-      .nav-link:hover {
-        color: #007bff;
-        background: none;
-      }
-
-      .megamenu-dropdown {
-        position: static;
-        display: block;
-        border: none;
-        box-shadow: none;
-        border-radius: 4px;
-        padding: 0;
-      }
-
-      .has-dropdown .megamenu-dropdown {
-        display: block;
-      }
-
-      .subcategory-link {
-        padding: 0.5rem 0;
-        font-size: 0.95rem;
-        color: #666;
-        display: block;
-      }
-
-      .subcategory-link:hover {
-        color: #007bff;
-        background: none;
-      }
+      .megamenu-dropdown { position: static; display: block; border: none; box-shadow: none; padding: 0; }
+      .has-dropdown .megamenu-dropdown { display: block; }
+      .subcategory-link { padding: 0.5rem 0; }
     }
   `],
 })

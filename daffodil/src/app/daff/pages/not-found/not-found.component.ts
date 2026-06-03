@@ -10,169 +10,86 @@ import {
 import { RouterLink } from '@angular/router';
 
 @Component({
-  changeDetection: ChangeDetectionStrategy.OnPush,selector: 'app-not-found',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-not-found',
   standalone: true,
   imports: [RouterLink],
   template: `
     <div class="not-found-container">
-      <div class="not-found-content">
-        <div class="error-code">404</div>
-        <h1 class="error-title">Page Not Found</h1>
-        <div class="error-actions">
-          <a [routerLink]="['/']" class="home-button">
-            ← Back to Home
-          </a>
+      <div class="terminal">
+        <div class="term-head">
+          <span class="win-dots"><i></i><i></i><i></i></span>
+          <span class="term-title">core_dumped — zsh</span>
+        </div>
+        <div class="term-body">
+          <p class="line"><span class="ps1">brent&#64;trail:~$</span> cd {{ '\$_REQUESTED_PATH' }}</p>
+          <p class="line err">zsh: segmentation fault (core dumped)</p>
+          <p class="line err big">Error 404: route not found</p>
+          <p class="line muted">// you took a wrong turn off the trail. no such path on this server.</p>
+          <p class="line muted">// stack trace: you → ??? → 404</p>
+          <p class="line">
+            <span class="ps1">brent&#64;trail:~$</span>
+            <a [routerLink]="['/']" class="home-link">cd ~/ &amp;&amp; ./restart.sh</a><span class="crg-cursor"></span>
+          </p>
         </div>
       </div>
     </div>
   `,
   styles: [`
     :host {
-      --gray-100: #f5f5f5;
-      --gray-200: #e5e5e5;
-      --gray-600: #525252;
-      --gray-700: #404040;
-      --gray-900: #171717;
-      --blue-600: #1557e6;
-      --blue-700: #1347cc;
-
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: var(--crg-mono, monospace);
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
 
     .not-found-container {
-      min-height: calc(100vh - 200px);
+      min-height: calc(100vh - 120px);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
     }
 
-    .not-found-content {
-      text-align: center;
-      max-width: 500px;
+    .terminal {
+      width: 100%;
+      max-width: 640px;
+      background: #0a0e14;
+      border: 1px solid var(--crg-border, #30363d);
+      border-radius: 12px;
+      box-shadow: 0 0 0 1px rgba(255, 95, 86, 0.12), 0 24px 60px rgba(0, 0, 0, 0.6);
+      overflow: hidden;
     }
 
-    .error-code {
-      font-size: 8rem;
-      font-weight: 900;
-      color: var(--blue-600);
-      line-height: 1;
-      margin-bottom: 1rem;
-      text-shadow: 0 4px 8px rgba(21, 87, 230, 0.2);
-    }
-
-    .error-title {
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: var(--gray-900);
-      margin: 0 0 1rem 0;
-      line-height: 1.2;
-    }
-
-    .error-message {
-      font-size: 1.125rem;
-      color: var(--gray-600);
-      line-height: 1.6;
-      margin: 0 0 2.5rem 0;
-      max-width: 400px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-
-    .error-actions {
+    .term-head {
       display: flex;
-      justify-content: center;
-      gap: 1rem;
-    }
-
-    .home-button {
-      display: inline-flex;
       align-items: center;
-      padding: 0.875rem 2rem;
-      background: var(--blue-600);
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 500;
-      font-size: 1rem;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 8px rgba(21, 87, 230, 0.3);
+      gap: 0.75rem;
+      padding: 0.7rem 1rem;
+      background: var(--crg-surface, #161b22);
+      border-bottom: 1px solid var(--crg-border, #30363d);
     }
+    .win-dots { display: inline-flex; gap: 6px; }
+    .win-dots i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+    .win-dots i:nth-child(1) { background: #ff5f56; }
+    .win-dots i:nth-child(2) { background: #ffbd2e; }
+    .win-dots i:nth-child(3) { background: #27c93f; }
+    .term-title { color: var(--crg-text-dim, #8b949e); font-size: 0.8rem; }
 
-    .home-button:hover {
-      background: var(--blue-700);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(21, 87, 230, 0.4);
-    }
+    .term-body { padding: 1.75rem 2rem 2rem; }
+    .line { margin: 0.35rem 0; font-size: 0.95rem; color: var(--crg-text, #e6edf3); }
+    .ps1 { color: var(--crg-cyan, #39d0ff); margin-right: 0.5rem; }
+    .muted { color: var(--crg-text-dim, #8b949e); }
+    .err { color: #ff6b6b; }
+    .err.big { font-size: 1.4rem; font-weight: 800; margin: 0.75rem 0; }
 
-    .error-illustration {
-      margin-top: 3rem;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-    }
-
-    .illustration-circle {
-      width: 120px;
-      height: 120px;
-      background: linear-gradient(135deg, var(--blue-600), #6366f1);
-      border-radius: 50%;
-      opacity: 0.1;
-      position: absolute;
-    }
-
-    .illustration-text {
-      font-size: 4rem;
-      position: relative;
-      z-index: 1;
-    }
+    .home-link { color: var(--crg-green, #00ff66); text-decoration: none; }
+    .home-link:hover { text-decoration: underline; text-shadow: 0 0 10px rgba(0, 255, 102, 0.6); }
 
     @media (max-width: 768px) {
-      .not-found-container {
-        padding: 1rem;
-        min-height: calc(100vh - 150px);
-      }
-
-      .error-code {
-        font-size: 6rem;
-      }
-
-      .error-title {
-        font-size: 2rem;
-      }
-
-      .error-message {
-        font-size: 1rem;
-      }
-
-      .home-button {
-        padding: 0.75rem 1.5rem;
-        font-size: 0.9rem;
-      }
-
-      .illustration-text {
-        font-size: 3rem;
-      }
-
-      .illustration-circle {
-        width: 100px;
-        height: 100px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .error-code {
-        font-size: 4rem;
-      }
-
-      .error-title {
-        font-size: 1.75rem;
-      }
+      .term-body { padding: 1.25rem 1.1rem 1.5rem; }
+      .err.big { font-size: 1.15rem; }
+      .line { font-size: 0.85rem; }
     }
   `],
 })
