@@ -13,6 +13,21 @@ const app = express();
 const angularApp = new AngularNodeAppEngine();
 
 /**
+ * This server runs behind a Caddy reverse proxy that terminates TLS and
+ * forwards requests. Angular 20's SSR has SSRF protection that validates the
+ * `Host` and `X-Forwarded-Host` headers against an allowlist; when they don't
+ * match it silently falls back to client-side rendering. Normalize both to a
+ * single allowed host ("localhost", set in NG_ALLOWED_HOSTS) so server-side
+ * rendering always runs. URL generation here is config-driven (Magento
+ * base_url + relative paths), so the host value doesn't affect output.
+ */
+app.use((req, _res, next) => {
+  req.headers.host = 'localhost';
+  delete req.headers['x-forwarded-host'];
+  next();
+});
+
+/**
  * Example Express Rest API endpoints can be defined here.
  * Uncomment and define endpoints as necessary.
  *
