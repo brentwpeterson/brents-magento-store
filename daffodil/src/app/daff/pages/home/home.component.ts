@@ -65,7 +65,7 @@ const FEATURED_QUERY = `
           <span class="term-title">{{ storeName }} — zsh</span>
         </div>
         <div class="term-body">
-          <p class="line"><span class="ps1">brent&#64;trail:~$</span> ./run.sh --pace=fast --distance=5k</p>
+          <p class="line"><span class="ps1">brent&#64;trail:~$</span> ./run.sh --pace=fast --distance=42k</p>
           <p class="line muted">&gt; warming up<span class="dots-anim">...</span> <span class="ok">ok</span></p>
           <p class="line muted">&gt; compiling stride<span class="dots-anim">...</span> <span class="ok">done</span> in 5k ms</p>
           <h1 class="hero-title">{{ heroTitle1 }}<br><span class="glow">{{ heroTitle2 }}</span></h1>
